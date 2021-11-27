@@ -59,6 +59,7 @@ buildCldc() (
     sed -i 's/.arch i486/.arch i586/g' cldc/src/vm/cpu/i386/SourceAssembler_i386.cpp || return 1
     cd cldc/build/linux_i386 || return 1
     make || return 1
+    ls -la dist || return 1
 )
 
 buildMidp() (
@@ -71,7 +72,15 @@ buildMidp() (
     sed -i 's/EXTRA_CFLAGS[[:space:]]*[+]=[[:space:]]*-Werror/# EXTRA_CFLAGS += -Werror/g' midp/build/common/makefiles/gcc.gmk
     cd midp/build/linux_fb_gcc || return 1
     make || return 1
+    ls -la output || return 1
 )
+
+prepareArchives() {
+    mkdir archives || return 1
+    tar -C cldc/build/linux_i386 -cJf archives/cldc-linux-i386.tar.xz dist || return 1
+    tar -C midp/build/linux_fb_gcc -cJf archives/midp-linux-fb-i386.tar.xz output || return 1
+    ls -la archives || return 1
+}
 
 buildAll() {
     prepareSystem || return 1
@@ -80,6 +89,7 @@ buildAll() {
     buildPcsl || return 1
     buildCldc || return 1
     buildMidp || return 1
+    prepareArchives || return 1
 }
 
 buildAll

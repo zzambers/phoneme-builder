@@ -18,3 +18,13 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: ./build.sh
+      - name: Upload assets
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: eine/tip@master
+        timeout-minutes: 15
+        with:
+          tag: latest
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            archives/cldc-linux-i386.tar.xz
+            archives/midp-linux-fb-i386.tar.xz
