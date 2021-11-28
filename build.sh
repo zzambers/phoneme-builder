@@ -57,6 +57,7 @@ buildCldc() (
     cp preverifier/build/linux/preverify cldc/build/share/bin/linux_i386/preverify || return 1
     sed -i 's/.arch i486/.arch i586/g' cldc/src/vm/cpu/c/AsmStubs_i386.s || return 1
     sed -i 's/.arch i486/.arch i586/g' cldc/src/vm/cpu/i386/SourceAssembler_i386.cpp || return 1
+    sed -i 's/2> [$](JVM_MAP)/> $(JVM_MAP)/g' cldc/build/share/jvm.make || return 1
     cd cldc/build/linux_i386 || return 1
     make || return 1
     ls -la dist || return 1
